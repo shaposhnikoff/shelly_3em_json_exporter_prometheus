@@ -1,10 +1,10 @@
-# Shelly 3EM JSON Exporter for Prometheus
+# Shelly 3EM JSON Exporter для Prometheus
 
-## Description
+## Описание
 
-A project for monitoring the three-phase energy monitor **Shelly 3EM** using **Prometheus** and **JSON Exporter**. The system converts the Shelly 3EM device's JSON API into Prometheus format metrics for subsequent analysis and visualization.
+Проект для мониторинга трехфазного энергомонитора **Shelly 3EM** с использованием **Prometheus** и **JSON Exporter**. Система преобразует JSON API устройства Shelly 3EM в метрики формата Prometheus для последующего анализа и визуализации.
 
-## Architecture
+## Архитектура
 
 ```
 Shelly 3EM Device (192.168.10.69)
@@ -16,59 +16,101 @@ Shelly 3EM Device (192.168.10.69)
     Grafana / Dashboards
 ```
 
-## Project Structure
+## Структура проекта
 
 ```
 .
 ├── json_exporter/
-│   └── config.yml          # JSON Exporter configuration
+│   └── config.yml          # Конфигурация JSON Exporter
 └── prometheus/
-    └── prometheus.yml      # Prometheus configuration
+    └── prometheus.yml      # Конфигурация Prometheus
 ```
 
-## Components
+## Компоненты
 
 ### 1. JSON Exporter
-JSON Exporter polls the Shelly 3EM device's JSON API and converts the data into Prometheus metrics.
+JSON Exporter опрашивает JSON API устройства Shelly 3EM и преобразует данные в метрики Prometheus.
 
-**Device endpoint:** `http://192.168.10.69/rpc/Shelly.GetStatus`
+**Endpoint устройства:** `http://192.168.10.69/rpc/Shelly.GetStatus`
 
-**Port:** `7979`
+**Порт:** `7979`
 
 ### 2. Prometheus
-Collects metrics from JSON Exporter every 15 seconds.
+Собирает метрики с JSON Exporter каждые 15 секунд.
 
-**Port:** `9090`
+**Порт:** `9090`
 
-## Collected Metrics
+## Собираемые метрики
 
-### Phase Metrics (A, B, C)
-The following metrics are collected for each phase:
+### Фазовые метрики (A, B, C)
+Для каждой фазы собираются следующие метрики:
 
-- **Current** (`shelly_phase_{a|b|c}_current_amperes`) - Phase current in amperes
-- **Voltage** (`shelly_phase_{a|b|c}_voltage_volts`) - Phase voltage in volts
-- **Active Power** (`shelly_phase_{a|b|c}_active_power_watts`) - Active power in watts
-- **Apparent Power** (`shelly_phase_{a|b|c}_apparent_power_va`) - Apparent power in volt-amperes
-- **Power Factor** (`shelly_phase_{a|b|c}_power_factor`) - Power factor
-- **Frequency** (`shelly_phase_{a|b|c}_frequency_hertz`) - Frequency in hertz
-- **Total Energy** (`shelly_phase_{a|b|c}_total_active_energy_wh`) - Accumulated energy in watt-hours
+- **Ток** (`shelly_phase_{a|b|c}_current_amperes`) - Ток фазы в амперах
+- **Напряжение** (`shelly_phase_{a|b|c}_voltage_volts`) - Напряжение фазы в вольтах
+- **Активная мощность** (`shelly_phase_{a|b|c}_active_power_watts`) - Активная мощность в ваттах
+- **Полная мощность** (`shelly_phase_{a|b|c}_apparent_power_va`) - Полная мощность в вольт-амперах
+- **Коэффициент мощности** (`shelly_phase_{a|b|c}_power_factor`) - Power Factor
+- **Частота** (`shelly_phase_{a|b|c}_frequency_hertz`) - Частота в герцах
+- **Суммарная энергия** (`shelly_phase_{a|b|c}_total_active_energy_wh`) - Накопленная энергия в ватт-часах
 
-### Total Metrics
-- **Total Current** (`shelly_total_current_amperes`) - Sum of all phase currents
-- **Total Active Power** (`shelly_total_active_power_watts`) - Total active power
-- **Total Apparent Power** (`shelly_total_apparent_power_va`) - Total apparent power
-- **Total Energy** (`shelly_total_active_energy_wh`) - Total consumed energy
+### Суммарные метрики
+- **Общий ток** (`shelly_total_current_amperes`) - Суммарный ток всех фаз
+- **Общая активная мощность** (`shelly_total_active_power_watts`) - Суммарная активная мощность
+- **Общая полная мощность** (`shelly_total_apparent_power_va`) - Суммарная полная мощность
+- **Общая энергия** (`shelly_total_active_energy_wh`) - Суммарная потребленная энергия
 
-### System Metrics
-- **Uptime** (`shelly_uptime_seconds`) - Device uptime in seconds
-- **Free RAM** (`shelly_ram_free_bytes`) - Free RAM in bytes
-- **Temperature** (`shelly_temperature_celsius`) - Device temperature in degrees Celsius
+### Системные метрики
+- **Uptime** (`shelly_uptime_seconds`) - Время работы устройства в секундах
+- **Свободная RAM** (`shelly_ram_free_bytes`) - Свободная оперативная память в байтах
+- **Температура** (`shelly_temperature_celsius`) - Температура устройства в градусах Цельсия
 
-### Network Metrics
-- **WiFi RSSI** (`shelly_wifi_rssi_dbm`) - WiFi signal level in dBm
-- **WiFi Status** (`shelly_wifi_status`) - WiFi connection status (1 = connected)
-- **Cloud Status** (`shelly_cloud_connected`) - Cloud connection status
-- **MQTT Status** (`shelly_mqtt_connected`) - MQTT connection status
+### Сетевые метрики
+- **WiFi RSSI** (`shelly_wifi_rssi_dbm`) - Уровень сигнала WiFi в dBm
+- **WiFi статус** (`shelly_wifi_status`) - Статус WiFi подключения (1 = подключено)
+- **Cloud статус** (`shelly_cloud_connected`) - Статус облачного подключения
+- **MQTT статус** (`shelly_mqtt_connected`) - Статус MQTT подключения
+
+## Пример метрик
+
+Пример реального вывода метрик из JSON Exporter:
+
+```prometheus
+# HELP shelly_cloud_connected_connected Cloud connection status
+# TYPE shelly_cloud_connected_connected untyped
+shelly_cloud_connected_connected{mac=""} 1
+
+# HELP shelly_mqtt_connected_connected MQTT connection status
+# TYPE shelly_mqtt_connected_connected untyped
+shelly_mqtt_connected_connected{mac=""} 0
+
+# HELP shelly_phase_a_active_power_watts_power Phase A active power in watts
+# TYPE shelly_phase_a_active_power_watts_power untyped
+shelly_phase_a_active_power_watts_power{mac="",phase="a"} 296.6
+
+# HELP shelly_phase_a_current_amperes_current Phase A current in amperes
+# TYPE shelly_phase_a_current_amperes_current untyped
+shelly_phase_a_current_amperes_current{mac="",phase="a"} 2.163
+
+# HELP shelly_phase_a_voltage_volts_voltage Phase A voltage in volts
+# TYPE shelly_phase_a_voltage_volts_voltage untyped
+shelly_phase_a_voltage_volts_voltage{mac="",phase="a"} 220
+
+# HELP shelly_total_active_power_watts_power Total active power in watts
+# TYPE shelly_total_active_power_watts_power untyped
+shelly_total_active_power_watts_power{mac=""} 435.066
+
+# HELP shelly_total_current_amperes_current Total current in amperes
+# TYPE shelly_total_current_amperes_current untyped
+shelly_total_current_amperes_current{mac=""} 3.271
+
+# HELP shelly_temperature_celsius_temperature Device temperature in Celsius
+# TYPE shelly_temperature_celsius_temperature untyped
+shelly_temperature_celsius_temperature{mac=""} 41.7
+
+# HELP shelly_wifi_rssi_dbm_rssi WiFi RSSI in dBm
+# TYPE shelly_wifi_rssi_dbm_rssi untyped
+shelly_wifi_rssi_dbm_rssi{mac="",ssid="Tplink"} -41
+```
 
 ## Configuration
 
