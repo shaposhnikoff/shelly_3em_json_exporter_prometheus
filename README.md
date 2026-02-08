@@ -2,7 +2,7 @@
 
 ## Description
 
-A project for monitoring the three-phase energy monitor **Shelly 3EM** using **Prometheus** and **JSON Exporter**. The system converts the Shelly 3EM device's JSON API into Prometheus format metrics for subsequent analysis and visualization.
+A project for monitoring the three-phase energy monitor **[Shelly 3EM](https://www.shelly.com/en/products/shop/shelly-3em-120a)** using **[Prometheus](https://prometheus.io/)** and **[JSON Exporter](https://github.com/prometheus-community/json_exporter)**. The system converts the Shelly 3EM device's JSON API into Prometheus format metrics for subsequent analysis and visualization.
 
 ## Architecture
 

@@ -2,7 +2,7 @@
 
 ## Описание
 
-Проект для мониторинга трехфазного энергомонитора **Shelly 3EM** с использованием **Prometheus** и **JSON Exporter**. Система преобразует JSON API устройства Shelly 3EM в метрики формата Prometheus для последующего анализа и визуализации.
+Проект для мониторинга трехфазного энергомонитора **[Shelly 3EM](https://www.shelly.com/en/products/shop/shelly-3em-120a)** с использованием **[Prometheus](https://prometheus.io/)** и **[JSON Exporter](https://github.com/prometheus-community/json_exporter)**. Система преобразует JSON API устройства Shelly 3EM в метрики формата Prometheus для последующего анализа и визуализации.
 
 ## Архитектура
 
