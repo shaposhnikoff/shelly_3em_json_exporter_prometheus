@@ -1,8 +1,8 @@
-# Shelly 3EM JSON Exporter для Prometheus
+# Shelly 3EM JSON Exporter for Prometheus
 
-## Описание
+## Description
 
-Проект для мониторинга трехфазного энергомонитора **Shelly 3EM** с использованием **Prometheus** и **JSON Exporter**. Система преобразует JSON API устройства Shelly 3EM в метрики формата Prometheus для последующего анализа и визуализации.
+A project for monitoring the three-phase energy monitor **Shelly 3EM** using **Prometheus** and **JSON Exporter**. The system converts the Shelly 3EM device's JSON API into Prometheus format metrics for subsequent analysis and visualization.
 
 ## Архитектура
 
@@ -112,104 +112,104 @@ shelly_temperature_celsius_temperature{mac=""} 41.7
 shelly_wifi_rssi_dbm_rssi{mac="",ssid="Tplink"} -41
 ```
 
-## Configuration
+## Конфигурация
 
-### Shelly 3EM Device
-- **IP Address:** 192.168.10.69
-- **MAC Address:** 34987A468050
+### Устройство Shelly 3EM
+- **IP-адрес:** 192.168.10.69
+- **MAC-адрес:** 34987A468050
 - **API Endpoint:** `/rpc/Shelly.GetStatus`
 
 ### Prometheus
-- **Scrape Interval:** 15 seconds
-- **Job Name:** `shelly_json`
+- **Интервал сбора:** 15 секунд
+- **Job name:** `shelly_json`
 - **Module:** `shelly_3em`
 
 ### Labels
-Each metric contains standard labels:
-- `mac` - Device MAC address
-- `device` - Device identifier (shelly_192_168_10_69)
-- `shelly_mac` - Shelly MAC address (34987A468050)
-- `phase` - Phase (a/b/c) for phase metrics
-- `ssid` - WiFi SSID for WiFi metrics
+Каждая метрика содержит стандартные метки:
+- `mac` - MAC-адрес устройства
+- `device` - Идентификатор устройства (shelly_192_168_10_69)
+- `shelly_mac` - MAC-адрес Shelly (34987A468050)
+- `phase` - Фаза (a/b/c) для фазовых метрик
+- `ssid` - SSID WiFi сети для WiFi метрик
 
-## Installation and Deployment
+## Установка и запуск
 
-### Prerequisites
+### Предварительные требования
 - Prometheus
 - [JSON Exporter](https://github.com/prometheus-community/json_exporter)
-- Shelly 3EM device on local network
+- Устройство Shelly 3EM в локальной сети
 
-### Running JSON Exporter
+### Запуск JSON Exporter
 ```bash
 json_exporter --config.file=json_exporter/config.yml
 ```
 
-### Running Prometheus
+### Запуск Prometheus
 ```bash
 prometheus --config.file=prometheus/prometheus.yml
 ```
 
-### Health Check
+### Проверка работы
 1. JSON Exporter: `http://127.0.0.1:7979/metrics`
 2. Prometheus: `http://localhost:9090`
 3. Targets: `http://localhost:9090/targets`
 
-## PromQL Query Examples
+## Примеры запросов PromQL
 
-### Current Power Consumption by Phase
+### Текущая потребляемая мощность по фазам
 ```promql
 shelly_phase_a_active_power_watts{device="shelly_192_168_10_69"}
 shelly_phase_b_active_power_watts{device="shelly_192_168_10_69"}
 shelly_phase_c_active_power_watts{device="shelly_192_168_10_69"}
 ```
 
-### Total Power Consumption
+### Общая потребляемая мощность
 ```promql
 shelly_total_active_power_watts{device="shelly_192_168_10_69"}
 ```
 
-### Energy Consumption Over Last Hour
+### Потребление энергии за последний час
 ```promql
 rate(shelly_total_active_energy_wh{device="shelly_192_168_10_69"}[1h]) * 3600
 ```
 
-### Voltage Across All Phases
+### Напряжение по всем фазам
 ```promql
 shelly_phase_a_voltage_volts{device="shelly_192_168_10_69"}
 shelly_phase_b_voltage_volts{device="shelly_192_168_10_69"}
 shelly_phase_c_voltage_volts{device="shelly_192_168_10_69"}
 ```
 
-### Load Balance by Phase
+### Баланс нагрузки по фазам
 ```promql
 avg(shelly_phase_a_current_amperes{device="shelly_192_168_10_69"})
 avg(shelly_phase_b_current_amperes{device="shelly_192_168_10_69"})
 avg(shelly_phase_c_current_amperes{device="shelly_192_168_10_69"})
 ```
 
-## Using with Grafana
+## Использование с Grafana
 
-For metrics visualization, it's recommended to use Grafana with Prometheus as a data source. You can create dashboards to display:
-- Power consumption graphs by phase
-- Total power consumption
-- Voltage and current
-- Energy counters
-- System metrics (temperature, uptime, WiFi signal)
+Для визуализации метрик рекомендуется использовать Grafana с источником данных Prometheus. Можно создать дашборды для отображения:
+- Графиков потребления мощности по фазам
+- Суммарной мощности
+- Напряжения и тока
+- Счетчиков энергии
+- Системных метрик (температура, uptime, WiFi сигнал)
 
-## Notes
+## Примечания
 
-- All phase data is extracted from the `em:0` object in Shelly's JSON response
-- Energy counter data is extracted from the `emdata:0` object
-- Scrape frequency is set to 15 seconds to balance data freshness and device load
-- Device MAC address is used as the primary label for identification
+- Все фазовые данные извлекаются из объекта `em:0` JSON ответа Shelly
+- Данные счетчиков энергии извлекаются из объекта `emdata:0`
+- Частота опроса настроена на 15 секунд для баланса между актуальностью данных и нагрузкой на устройство
+- MAC-адрес устройства используется как основная метка для идентификации
 
-## Useful Links
+## Полезные ссылки
 
 - [Shelly 3EM Documentation](https://shelly-api-docs.shelly.cloud/)
 - [Prometheus Documentation](https://prometheus.io/docs/)
 - [JSON Exporter](https://github.com/prometheus-community/json_exporter)
 - [PromQL Guide](https://prometheus.io/docs/prometheus/latest/querying/basics/)
 
-## License
+## Лицензия
 
-This project is created for personal use and energy consumption monitoring.
+Проект создан для личного использования и мониторинга энергопотребления.
