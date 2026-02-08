@@ -70,6 +70,48 @@ JSON Exporter опрашивает JSON API устройства Shelly 3EM и �
 - **Cloud статус** (`shelly_cloud_connected`) - Статус облачного подключения
 - **MQTT статус** (`shelly_mqtt_connected`) - Статус MQTT подключения
 
+## Пример метрик
+
+Пример реального вывода метрик из JSON Exporter:
+
+```prometheus
+# HELP shelly_cloud_connected_connected Cloud connection status
+# TYPE shelly_cloud_connected_connected untyped
+shelly_cloud_connected_connected{mac=""} 1
+
+# HELP shelly_mqtt_connected_connected MQTT connection status
+# TYPE shelly_mqtt_connected_connected untyped
+shelly_mqtt_connected_connected{mac=""} 0
+
+# HELP shelly_phase_a_active_power_watts_power Phase A active power in watts
+# TYPE shelly_phase_a_active_power_watts_power untyped
+shelly_phase_a_active_power_watts_power{mac="",phase="a"} 296.6
+
+# HELP shelly_phase_a_current_amperes_current Phase A current in amperes
+# TYPE shelly_phase_a_current_amperes_current untyped
+shelly_phase_a_current_amperes_current{mac="",phase="a"} 2.163
+
+# HELP shelly_phase_a_voltage_volts_voltage Phase A voltage in volts
+# TYPE shelly_phase_a_voltage_volts_voltage untyped
+shelly_phase_a_voltage_volts_voltage{mac="",phase="a"} 220
+
+# HELP shelly_total_active_power_watts_power Total active power in watts
+# TYPE shelly_total_active_power_watts_power untyped
+shelly_total_active_power_watts_power{mac=""} 435.066
+
+# HELP shelly_total_current_amperes_current Total current in amperes
+# TYPE shelly_total_current_amperes_current untyped
+shelly_total_current_amperes_current{mac=""} 3.271
+
+# HELP shelly_temperature_celsius_temperature Device temperature in Celsius
+# TYPE shelly_temperature_celsius_temperature untyped
+shelly_temperature_celsius_temperature{mac=""} 41.7
+
+# HELP shelly_wifi_rssi_dbm_rssi WiFi RSSI in dBm
+# TYPE shelly_wifi_rssi_dbm_rssi untyped
+shelly_wifi_rssi_dbm_rssi{mac="",ssid="Tplink"} -41
+```
+
 ## Конфигурация
 
 ### Устройство Shelly 3EM
